@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>🌾 Crop Yield Prediction</h2>
+
+    <div class="result-box">
+        {{ explanation }}
+    </div>
+
+    <!-- GRAPH -->
+    <canvas id="yieldChart" height="120"></canvas>
+
+    <a class="back-btn" href="/dashboard">⬅ Back to Dashboard</a>
+
+</div>
+
+<script>
+    const mlYield = {{ ml_yield | safe }};
+    const qmlYield = {{ qml_yield | safe }};
+
+    const ctx = document.getElementById("yieldChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Classical ML", "Quantum ML"],
+            datasets: [{
+                label: "Predicted Yield",
+                data: [mlYield, qmlYield],
+                backgroundColor: [
+                    "rgba(37, 99, 235, 0.8)",
+                    "rgba(16, 185, 129, 0.8)"
+                ],
+                borderRadius: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: {
+                duration: 1200,
+                easing: "easeOutQuart"
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: "#e5e7eb"
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Crop Yield Prediction</h1>
+        <p>Satellite Data • ML • Quantum ML</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="card-grid">
+
+        <!-- LOCATION CARD -->
+        <a href="/input/location" class="card">
+            <img src="/static/images/crops/rice.jpg" alt="Rice Crop">
+            <div class="card-content">
+                <h3>📍 Location Based</h3>
+                <p>Auto weather using satellite data</p>
+            </div>
+        </a>
+
+        <!-- MANUAL CARD -->
+        <a href="/input/manual" class="card">
+            <img src="/static/images/crops/wheat.jpg" alt="Wheat Crop">
+            <div class="card-content">
+                <h3>✍️ Manual Input</h3>
+                <p>Enter climate & soil values</p>
+            </div>
+        </a>
+
+        <!-- IMAGE CARD -->
+        <a href="/input/image" class="card">
+            <img src="/static/images/crops/maize.jpg" alt="Maize Crop">
+            <div class="card-content">
+                <h3>📷 Image Input</h3>
+                <p>Upload crop image for analysis</p>
+            </div>
+        </a>
+
+    </div>
+
+    <div style="text-align:center; margin-top:35px;">
+        <a href="/logout">Logout</a>
+    </div>
+
+</div>
+
+</body>
+</html>

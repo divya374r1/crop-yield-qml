@@ -1,0 +1,11 @@
+<h2>🌍 Satellite Weather Data</h2>
+
+<p>🌡️ Temperature: {{ temperature }} °C</p>
+
+{% if rainfall is not none %}
+<p>🌧️ Rainfall: {{ rainfall }} mm (last 7 days)</p>
+{% else %}
+<p>🌧️ Rainfall: {{ rainfall_note }}</p>
+{% endif %}
+
+<a href="/dashboard">Continue</a>
