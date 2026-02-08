@@ -3,6 +3,7 @@ import sqlite3
 import os
 from PIL import Image
 import numpy as np
+from werkzeug.utils import secure_filename
 
 # ---------- IMPORTS ----------
 from utils.languages import LANGUAGES
@@ -118,14 +119,11 @@ def input_location():
         qml = CropYieldQML()
         qml_pred = float(qml.predict(X))
 
-        explanation = explain_prediction(
-            crop, temperature, rainfall, ml_pred, qml_pred,
-            session.get("language", "en")
-        )
-
-        # ✅ STORE EVERYTHING
         session["result_data"] = {
-            "explanation": explanation,
+            "explanation": explain_prediction(
+                crop, temperature, rainfall, ml_pred, qml_pred,
+                session.get("language", "en")
+            ),
             "ml_yield": ml_pred,
             "qml_yield": qml_pred
         }
@@ -163,13 +161,11 @@ def input_manual():
         qml = CropYieldQML()
         qml_pred = float(qml.predict(X))
 
-        explanation = explain_prediction(
-            crop, temperature, rainfall, ml_pred, qml_pred,
-            session.get("language", "en")
-        )
-
         session["result_data"] = {
-            "explanation": explanation,
+            "explanation": explain_prediction(
+                crop, temperature, rainfall, ml_pred, qml_pred,
+                session.get("language", "en")
+            ),
             "ml_yield": ml_pred,
             "qml_yield": qml_pred
         }
@@ -190,7 +186,8 @@ def input_image():
         crop = request.form["crop"]
         image = request.files["image"]
 
-        path = os.path.join(app.config["UPLOAD_FOLDER"], image.filename)
+        filename = secure_filename(image.filename)
+        path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         image.save(path)
 
         img = Image.open(path).convert("L")
@@ -211,13 +208,11 @@ def input_image():
         qml = CropYieldQML()
         qml_pred = float(qml.predict(X))
 
-        explanation = explain_prediction(
-            crop, temperature, rainfall, ml_pred, qml_pred,
-            session.get("language", "en")
-        )
-
         session["result_data"] = {
-            "explanation": explanation,
+            "explanation": explain_prediction(
+                crop, temperature, rainfall, ml_pred, qml_pred,
+                session.get("language", "en")
+            ),
             "ml_yield": ml_pred,
             "qml_yield": qml_pred
         }
@@ -233,6 +228,8 @@ def result():
         return redirect(url_for("login"))
 
     data = session.get("result_data")
+    if not data:
+        return redirect(url_for("dashboard"))
 
     return render_template(
         "result.html",
@@ -249,9 +246,5 @@ def logout():
 
 # ---------- RUN ----------
 if __name__ == "__main__":
-    import os
-
-if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
